@@ -1,5 +1,4 @@
-# Your Project's Title...
-Your project's description...
+# AEM EDS Test
 
 ## Environments
 - Preview: https://main--{repo}--{owner}.aem.page/
