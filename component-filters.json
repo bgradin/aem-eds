@@ -22,8 +22,7 @@
       "tabs",
       "table",
       "text",
-      "video",
-      "product-recommendations"
+      "video"
     ]
   },
   {
@@ -60,19 +59,6 @@
       "text",
       "image"
     ]
-  },
-  {
-    "id": "table",
-    "rte": {
-      "toolbar": {
-        "insert": [
-          "table"
-        ],
-        "sections": [
-          "insert"
-        ]
-      }
-    }
   },
   {
     "id": "tabs",

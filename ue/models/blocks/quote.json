@@ -3,16 +3,11 @@
     {
       "title": "Quote",
       "id": "quote",
-      "model": "quote",
       "plugins": {
         "da": {
           "name": "quote",
           "rows": 1,
-          "columns": 1,
-          "fields": [
-            { "name": "quote", "selector": "div:nth-child(1)>div"},
-            { "name": "author", "selector": "div:nth-child(2)>div"}
-          ]
+          "columns": 1
         }
       }
     }
@@ -24,13 +19,13 @@
         {
           "component": "richtext",
           "valueType": "string",
-          "name": "quote",
+          "name": "div:nth-child(1)>div:nth-child(1)",
           "label": "Quote",
           "required": true
         },
         {
           "component": "text",
-          "name": "author",
+          "name": "div:nth-child(2)>div:nth-child(1)>p:nth-child(1)",
           "label": "Author",
           "valueType": "string"
         }

@@ -3,21 +3,10 @@
     {
       "title": "Image",
       "id": "image",
-      "model": "image",
       "plugins": {
         "da": {
           "name": "image",
-          "type": "image",
-          "fields": [
-            {
-              "name": "image",
-              "selector": "img[src]"
-            },
-            {
-              "name": "imageAlt",
-              "selector": "img[alt]"
-            }
-          ]
+          "type": "image"
         }
       }
     }
@@ -29,12 +18,18 @@
         {
           "component": "reference",
           "name": "image",
+          "hidden": true,
+          "multi": false
+        },
+        {
+          "component": "reference",
+          "name": "img:nth-child(3)[src]",
           "label": "Image",
           "multi": false
         },
         {
           "component": "text",
-          "name": "imageAlt",
+          "name": "img:nth-child(3)[alt]",
           "label": "Alt Text"
         }
       ]

@@ -3,27 +3,18 @@
     {
       "title": "Tabs",
       "id": "tabs",
-      "model": "tabs",
-      "filter": "tabs",
       "plugins": {
         "da": {
-          "columns": 1,
-          "rows": 2
+          "unsafeHTML": "<div class=\"tabs\"><div><div><p></p></div><div></div></div></div>"
         }
       }
     },
     {
       "title": "Tabs Item",
       "id": "tabs-item",
-      "model": "tabs-item",
       "plugins": {
         "da": {
-          "columns": 0,
-          "rows": 2,
-          "fields": [
-            { "name": "name", "selector": "div:nth-child(1)"},
-            { "name": "content", "selector": "div:nth-child(2)"}
-          ] 
+          "unsafeHTML": "<div><div><p></p></div><div></div></div>"
         }
       }
     }
@@ -34,13 +25,13 @@
       "fields": [
         {
           "component": "text",
-          "name": "name",
+          "name": "div:nth-child(1)>p:nth-child(1)",
           "valueType": "string",
           "label": "Tab Name"
         },
         {
           "component": "richtext",
-          "name": "content",
+          "name": "div:nth-child(2)",
           "label": "Content",
           "valueType": "string"
         }

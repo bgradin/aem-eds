@@ -22,7 +22,7 @@ const setupObservers = () => {
         const removedElements = mutation.removedNodes;
 
         // detect the mutation type of the block or picture (for cards)
-        const type = mutation.target.classList.contains('cards-card-image') ? 'cards-image' : mutation.target.attributes['data-aue-component']?.value;
+        const type = mutation.target.classList.contains('cards-card-image') ? 'cards-image' : mutation.target.attributes['data-aue-model']?.value;
 
         switch (type) {
           case 'cards':
@@ -58,7 +58,7 @@ const setupObservers = () => {
             }
             break;
           case 'carousel':
-            if (removedElements.length === 1 && removedElements[0].attributes['data-aue-component']?.value === 'carousel-item') {
+            if (removedElements.length === 1 && removedElements[0].attributes['data-aue-model']?.value === 'carousel-item') {
               const resourceAttr = removedElements[0].getAttribute('data-aue-resource');
               if (resourceAttr) {
                 const itemMatch = resourceAttr.match(/item-(\d+)/);
@@ -86,18 +86,21 @@ const setupObservers = () => {
 };
 
 const setupUEEventHandlers = () => {
-  // For each picture or img element change, update the srcsets of the picture element sources
-  document.body.addEventListener('aue:content-patch', ({ detail: { patch, request } }) => {
-    let element = document.querySelector(`[data-aue-resource="${request.target.resource}"]`);
-    if (element && element.getAttribute('data-aue-prop') !== patch.name) element = element.querySelector(`[data-aue-prop='${patch.name}']`);
-    if (element?.getAttribute('data-aue-type') !== 'media') return;
+  // For each img source change, update the srcsets of the parent picture sources
+  document.addEventListener('aue:content-patch', (event) => {
+    if (event.detail.patch.name.match(/img.*\[src\]/)) {
+      const newImgSrc = event.detail.patch.value;
+      const picture = event.srcElement.querySelector('picture');
 
-    const picture = element.tagName === 'IMG' ? element.closest('picture') : element;
-    picture?.querySelectorAll('source').forEach((source) => source.remove());
-    picture?.querySelector('img')?.removeAttribute('srcset');
+      if (picture) {
+        picture.querySelectorAll('source').forEach((source) => {
+          source.setAttribute('srcset', newImgSrc);
+        });
+      }
+    }
   });
 
-  document.body.addEventListener('aue:ui-select', (event) => {
+  document.addEventListener('aue:ui-select', (event) => {
     const { detail } = event;
     const resource = detail?.resource;
 
@@ -108,7 +111,7 @@ const setupUEEventHandlers = () => {
       }
       const blockEl = element.parentElement?.closest('.block[data-aue-resource]') || element?.closest('.block[data-aue-resource]');
       if (blockEl) {
-        const block = blockEl.getAttribute('data-aue-component');
+        const block = blockEl.getAttribute('data-aue-model');
         const index = element.getAttribute('data-slide-index');
 
         switch (block) {
