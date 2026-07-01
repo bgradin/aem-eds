@@ -1,28 +1,34 @@
-export default function init(el) {
-  const tables = el.querySelectorAll('table');
-  for (const table of tables) {
-    let thead = table.querySelector('table > thead');
-    const rows = [...table.querySelectorAll('tr')];
+/*
+ * Table Block
+ * Recreate a table
+ * https://www.hlx.live/developer/block-collection/table
+ */
 
-    if (!thead) {
-      thead = document.createElement('thead');
-      table.prepend(thead);
+function buildCell(rowIndex) {
+  const cell = rowIndex ? document.createElement('td') : document.createElement('th');
+  if (!rowIndex) cell.setAttribute('scope', 'col');
+  return cell;
+}
 
-      const headingRow = rows.shift();
-      if (headingRow) {
-        thead.append(headingRow);
-        const tds = headingRow.querySelectorAll(':scope > td');
-        for (const td of tds) {
-          const th = document.createElement('th');
-          th.className = td.className;
-          th.innerHTML = td.innerHTML;
-          td.parentElement.replaceChild(th, td);
-        }
-      }
-    }
+export default async function decorate(block) {
+  const table = document.createElement('table');
+  const thead = document.createElement('thead');
+  const tbody = document.createElement('tbody');
 
-    for (const row of rows) {
-      row.classList.add('table-content-row');
-    }
-  }
+  const header = !block.classList.contains('no-header');
+  if (header) table.append(thead);
+  table.append(tbody);
+
+  [...block.children].forEach((child, i) => {
+    const row = document.createElement('tr');
+    if (header && i === 0) thead.append(row);
+    else tbody.append(row);
+    [...child.children].forEach((col) => {
+      const cell = buildCell(header ? i : i + 1);
+      cell.innerHTML = col.innerHTML;
+      row.append(cell);
+    });
+  });
+  block.innerHTML = '';
+  block.append(table);
 }
